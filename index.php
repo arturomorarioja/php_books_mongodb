@@ -1,20 +1,15 @@
 <?php
 
-$authorFilter = $_GET['authors'] ?? '';
-
 require_once 'src/book.php';
 $books = new Book;
 $authors = $books->getAuthors();
 
+$authorFilter = $_GET['authors'] ?? '';
 if ($authorFilter === '') {
-    $list = $books->getAll();
+    $bookList = $books->getAll();
 } else {
-    $list = $books->getByAuthor($authorFilter);
+    $bookList = $books->getByAuthor($authorFilter);
 }
-
-// echo '<pre>';
-// print_r($list);
-// echo '</pre>';
 
 ?>
 <!DOCTYPE html>
@@ -31,40 +26,49 @@ if ($authorFilter === '') {
         <h1>Books</h1>
     </header>
     <main>
-        <form action="index.php" method="GET" id="frmAuthor">
-            <div>
-                <select name="authors" id="cmbAuthor">
-                    <option></option>
-                    <?php foreach ($authors as $author): ?>
-                        <option 
-                                <?=$author === $authorFilter ? 'selected' : '' ?>>
+        <?php if (isset($authors['error'])): ?>
+            <p>There was an error while retrieving the list of authors: <?=$authors['error'] ?></p>
+        <?php else: ?>
+            <form action="index.php" method="GET" id="frmAuthor">
+                <div>
+                    <label for="cmbAuthor">Filter by author</label>
+                    <select name="authors" id="cmbAuthor">
+                        <option></option>
+                        <?php foreach ($authors as $author): ?>
+                            <option 
+                            <?=$author === $authorFilter ? 'selected' : '' ?>>
                             <?=$author ?>
                         </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </form>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </form>
+        <?php endif; ?>
         <section>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Author</th>
-                        <th>Title</th>
-                        <th>Language</th>
-                        <th>Year</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($list as $book): ?>
+            <?php if (isset($bookList['error'])): ?>
+                <p>There was an error while retrieving the list of books: <?=$bookList['error'] ?></p>
+            <?php else: ?>
+                <table>
+                    <thead>
                         <tr>
-                            <td><?=$book['author'] ?></td>
-                            <td><?=$book['title'] ?></td>
-                            <td><?=$book['language'] ?></td>
-                            <td><?=$book['year'] ?></td>
+                            <th>Author</th>
+                            <th>Title</th>
+                            <th>Language</th>
+                            <th>Year</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($bookList as $book): ?>
+                            <tr>
+                                <td><?=$book['author'] ?></td>
+                                <td><?=$book['title'] ?></td>
+                                <td><?=$book['language'] ?></td>
+                                <td><?=$book['year'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endif; ?>
         </section>
     </main>
     <footer>
