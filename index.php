@@ -51,14 +51,24 @@ include 'views/header.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($bookList as $book): ?>
+                        <?php 
+                            foreach ($bookList as $book) {
+                                $author = $book['author'];
+                                $title = $book['title'];
+                                $language = $book['language'];
+                                $year = $book['year'];
+                        ?>
                             <tr>
-                                <td><?=$book['author'] ?></td>
-                                <td><?=$book['title'] ?></td>
-                                <td><?=$book['language'] ?></td>
-                                <td><?=$book['year'] ?></td>
+                                <td><?=$author ?></td>
+                                <td>
+                                    <a href="book.php?a=<?=$author ?>&t=<?=$title ?>&l=<?=$language ?>&y=<?=$year ?>">
+                                        <?=$title ?>
+                                    </a>
+                                </td>
+                                <td><?=$language ?></td>
+                                <td><?=$year ?></td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php } ?>
                     </tbody>
                 </table>
             <?php endif; ?>

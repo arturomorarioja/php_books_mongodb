@@ -1,3 +1,6 @@
-document.querySelector('#frmAuthor').addEventListener('change', function() {
-    this.submit();
-});
+const searchForm = document.querySelector('#frmAuthor');
+if (searchForm !== null) {
+    searchForm.addEventListener('change', function() {
+        this.submit();
+    });
+}

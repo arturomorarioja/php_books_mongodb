@@ -2,15 +2,23 @@
 
 $author = $_POST['author'] ?? '';
 $title = $_POST['title'] ?? '';
-$language = $_POST['language'] ?? '';
-$year = $_POST['year'] ?? '';
 
 $error = false;
+// POST request = add new book or delete book
 if ($author !== '' && $title !== '') {
+    $seeInfo = false;
+
+    $language = $_POST['language'] ?? '';
+    $year = $_POST['year'] ?? '';
+
     require_once 'src/book.php';
 
     $books = new Book;
-    $result = $books->add($author, $title, $language, $year);
+    if (isset($_POST['delete'])) {
+        $result = $books->delete($author, $title, $language, $year);
+    } else {
+        $result = $books->add($author, $title, $language, $year);
+    }
 
     // If the insertion is successful, 
     // the user is redirected to the home page
@@ -18,6 +26,13 @@ if ($author !== '' && $title !== '') {
     if (!$error) {
         header('Location: index.php');
     }
+// GET request = add new book or see book information
+} else {
+    $seeInfo = isset($_GET['a']);
+    $author = trim($_GET['a'] ?? '');
+    $title = trim($_GET['t'] ?? '');
+    $language = trim($_GET['l'] ?? '');
+    $year = trim($_GET['y'] ?? '');
 }
 
 $pageTitle = 'New book';
@@ -35,22 +50,29 @@ include 'views/header.php';
         <form action="book.php" method="POST">
             <div>
                 <label for="txtAuthor">Author</label>
-                <input type="text" name="author" id="txtAuthor" required>
+                <input type="text" name="author" id="txtAuthor" required
+                    value="<?=$author ?>" <?=$seeInfo ? 'readonly' : '' ?>>
             </div>
             <div>
                 <label for="txtTitle">Title</label>
-                <input type="text" name="title" id="txtTitle" required>
+                <input type="text" name="title" id="txtTitle" required
+                    value="<?=$title ?>" <?=$seeInfo ? 'readonly' : '' ?>>
             </div>
             <div>
                 <label for="txtLanguage">Language</label>
-                <input type="text" name="language" id="txtLanguage">
+                <input type="text" name="language" id="txtLanguage"
+                    value="<?=$language ?>" <?=$seeInfo ? 'readonly' : '' ?>>
             </div>
             <div>
                 <label for="txtYear">Year</label>
-                <input type="text" name="year" id="txtYear" pattern="[0-9]{4}">
+                <input type="text" name="year" id="txtYear" pattern="[0-9]{4}"
+                    value="<?=$year ?>" <?=$seeInfo ? 'readonly' : '' ?>>
             </div>
+            <?php if ($seeInfo): ?>
+                <input type="hidden" name="delete">
+            <?php endif; ?>
             <div>
-                <button type="submit">Add</button>
+                <button type="submit"><?=$seeInfo ? 'Delete' : 'Add' ?></button>
             </div>
         </form>
 <?php 
