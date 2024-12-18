@@ -24,4 +24,22 @@ Class Book extends Connection
             echo $e->getMessage();        
         }
     }
+
+    public function getByAuthor(string $author): object
+    {
+        try {
+            return $this->collection->find(['author' => $author]);
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function getAuthors(): array
+    {
+        try {
+            return $this->collection->distinct('author');
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }

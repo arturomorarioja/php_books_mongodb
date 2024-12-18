@@ -1,8 +1,16 @@
 <?php
 
+$authorFilter = $_GET['authors'] ?? '';
+
 require_once 'src/book.php';
 $books = new Book;
-$list = $books->getAll();
+$authors = $books->getAuthors();
+
+if ($authorFilter === '') {
+    $list = $books->getAll();
+} else {
+    $list = $books->getByAuthor($authorFilter);
+}
 
 // echo '<pre>';
 // print_r($list);
@@ -16,12 +24,26 @@ $list = $books->getAll();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <script src="js/script.js" type="module"></script>
 </head>
 <body>
     <header>
         <h1>Books</h1>
     </header>
     <main>
+        <form action="index.php" method="GET" id="frmAuthor">
+            <div>
+                <select name="authors" id="cmbAuthor">
+                    <option></option>
+                    <?php foreach ($authors as $author): ?>
+                        <option 
+                                <?=$author === $authorFilter ? 'selected' : '' ?>>
+                            <?=$author ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </form>
         <section>
             <table>
                 <thead>
