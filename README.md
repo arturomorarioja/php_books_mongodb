@@ -1,5 +1,11 @@
 # Books - PHP & MongoDB
-Sample code that connects PHP to a MongoDB database.
+Sample code to highlight PHP's interaction with MongoDB.
+
+The application lists a collection of books and offers the following functionalities:
+- Displaying the full list of books
+- Filtering books by author
+- Adding a new book
+- Deleting an existing book
 
 ## Installation
 A LAMP/WAMP/MAMP environment is assumed.
@@ -19,7 +25,7 @@ MongoDB database: `bookdb`. Collection: `books`. Connection string if the databa
 https://www.php.net/manual/en/mongodb.tutorial.library.php
 
 ## Tools
-MongoDB / PHP8 / Water.css / HTML5
+MongoDB / PHP8 / JavaScript / Water.css / HTML5
 
 ## Author
 Arturo Mora-Rioja
