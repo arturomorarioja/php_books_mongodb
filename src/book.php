@@ -47,4 +47,35 @@ Class Book extends Connection
             return ['error' => $e->getMessage()];
         }
     }
+
+    /**
+     * Inserts a new book
+     * 
+     * @return ['status' => 'ok'] or ['error' => <error_message>]
+     */
+    public function add(string $author, string $title, string $language, int $year): array
+    {
+        if (trim($author) === '') {
+            return ['error' => 'Author is mandatory'];
+        }
+        if (trim($title) === '') {
+            return ['error' => 'Title is mandatory'];
+        }
+        try {
+            $data = [
+                'author' => $author,
+                'title' => $title,
+                'year' => $year
+            ];
+            $language = trim($language);
+            if ($language !== '') {
+                $data['language'] = $language;
+            }
+            $this->collection->insertOne($data);
+
+            return ['status' => 'ok'];
+        } catch (Exception $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
 }

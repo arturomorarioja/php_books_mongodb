@@ -11,21 +11,14 @@ if ($authorFilter === '') {
     $bookList = $books->getByAuthor($authorFilter);
 }
 
+$pageTitle = 'Books';
+include 'views/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
-    <script src="js/script.js" type="module"></script>
-</head>
-<body>
-    <header>
-        <h1>Books</h1>
-    </header>
-    <main>
+        <nav>
+            <p>
+                <a href="book.php" title="Add new book">Add</a>
+            </p>
+        </nav>
         <?php if (isset($authors['error'])): ?>
             <p>There was an error while retrieving the list of authors: <?=$authors['error'] ?></p>
         <?php else: ?>
@@ -70,9 +63,6 @@ if ($authorFilter === '') {
                 </table>
             <?php endif; ?>
         </section>
-    </main>
-    <footer>
-        <p>&copy; 2024 Arturo Mora-Rioja</p>
-    </footer>
-</body>
-</html>
+<?php 
+include 'views/footer.php'; 
+?>
